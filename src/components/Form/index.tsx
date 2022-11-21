@@ -2,6 +2,7 @@ import React from 'react';
 import { ITarefa } from '../../types/tarefa';
 import Button from '../Button';
 import style from './Form.module.scss';
+import { v4 as uuidv4 } from 'uuid';
 
 class Formulario extends React.Component <{
     setTarefas: React.Dispatch<React.SetStateAction<ITarefa[]>>
@@ -19,7 +20,8 @@ class Formulario extends React.Component <{
                  {
                     ...this.state,
                     selecionado: false,
-                    completado: false
+                    completado: false,
+                    id: uuidv4()
                 }
             ]
         );
