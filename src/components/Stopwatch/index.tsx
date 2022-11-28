@@ -7,16 +7,27 @@ import { useEffect, useState } from 'react'
 
 interface Props {
     selecionado: ITarefa | undefined
+    finalizarTarefa: () => void
 }
 
-export default function Stopwatch({ selecionado }: Props) {
+export default function Stopwatch({ selecionado, finalizarTarefa }: Props) {
     const [tempo, setTempo] = useState<number>();
 
     useEffect(() => {
         if(selecionado?.tempo) {
             setTempo(tempoParaSegundos(selecionado.tempo));
         }
-    }, [selecionado])
+    }, [selecionado]);
+
+    function regressiva(contador: number = 0) {
+        setTimeout(() => {
+            if(contador > 0) {
+                setTempo(contador - 1);
+                return regressiva(contador -1);
+            }
+            finalizarTarefa();
+        }, 1000)
+    }
 
     return (
         <div className={style.cronometro}>
@@ -24,7 +35,7 @@ export default function Stopwatch({ selecionado }: Props) {
             <div className={style.relogioWrapper}>
                 <Watch tempo={tempo}/>
             </div>
-            <Button>Começar</Button>
+            <Button onClick={() => regressiva(tempo)}>Começar</Button>
         </div>
     )
 }
